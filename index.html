@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Quick Question</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f8ff; 
+            text-align: center;
+            transition: background-color 0.5s ease;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 90%;
+            width: 350px;
+        }
+        h1 { color: #333; margin-bottom: 25px; font-size: 1.8rem; }
+        button {
+            font-size: 18px; padding: 12px 30px; margin: 10px;
+            border: none; border-radius: 8px; cursor: pointer;
+            font-weight: bold; transition: transform 0.1s;
+        }
+        button:active { transform: scale(0.95); }
+        #btn-yes { background-color: #4CAF50; color: white; }
+        #btn-no { background-color: #ff4d4d; color: white; }
+        
+        .form-group { text-align: left; margin-bottom: 15px; }
+        label { font-weight: bold; color: #555; font-size: 14px; }
+        input {
+            width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 10px;
+            border: 1px solid #ccc; border-radius: 8px;
+            box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Content -->
+    <div class="container" id="main-box">
+        <h1>Can I ask a question? 🤔</h1>
+        <button id="btn-yes" onclick="askDate()">Yes</button>
+        <button id="btn-no" onclick="askDate()">No</button>
+    </div>
+
+    <script>
+        // === PASTE YOUR FORMSPREE LINK HERE ===
+        const myEmailLink = "https://formspree.io/f/mwvgoerw"; 
+
+        // Screen 2
+        function askDate() {
+            document.getElementById('main-box').innerHTML = `
+                <h1>date pe chalogi<br> (after sep) please 🥺</h1>
+                <button id="btn-yes" onclick="planDate()">Yes</button>
+                <button id="btn-no" onclick="thinkAboutIt()">No</button>
+            `;
+            document.body.style.backgroundColor = "#ffe6e6"; 
+        }
+
+        // Screen 3 (If No)
+        function thinkAboutIt() {
+            document.getElementById('main-box').innerHTML = `
+                <h1>think abot it please 🥺</h1>
+                <button id="btn-yes" onclick="planDate()">Okay, Yes!</button>
+            `;
+            document.body.style.backgroundColor = "#e6f2ff"; 
+        }
+
+        // Screen 3 (If Yes) 
+        function planDate() {
+            document.getElementById('main-box').innerHTML = `
+                <h1>Yay! Let's plan it! 🎉</h1>
+                
+                <div class="form-group">
+                    <label>When? (Date)</label>
+                    <input type="date" id="datePicker">
+                </div>
+                
+                <div class="form-group">
+                    <label>What time?</label>
+                    <input type="time" id="timePicker">
+                </div>
+
+                <div class="form-group">
+                    <label>Where should we go?</label>
+                    <input type="text" id="placePicker" placeholder="Type a place...">
+                </div>
+
+                <button id="btn-yes" onclick="confirmDate()">Confirm Plan ❤️</button>
+            `;
+            document.body.style.backgroundColor = "#ccffcc"; 
+        }
+
+        // Final Screen & Sending Data
+        function confirmDate() {
+            const chosenDate = document.getElementById('datePicker').value;
+            const chosenTime = document.getElementById('timePicker').value;
+            const chosenPlace = document.getElementById('placePicker').value;
+
+            fetch(myEmailLink, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    "Date": chosenDate,
+                    "Time": chosenTime,
+                    "Place": chosenPlace
+                })
+            }).catch(error => console.log("Tracker blocked, but site still works."));
+
+            document.getElementById('main-box').innerHTML = `
+                <h1>Perfect! It's a date! 🥰</h1>
+                <p style="color: #555; font-size: 18px;">I can't wait!</p>
+            `;
+        }
+    </script>
+
+</body>
+</html>
